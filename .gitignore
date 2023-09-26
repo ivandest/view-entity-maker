@@ -1,1 +1,3 @@
 /target
+*.ts
+*.tsx

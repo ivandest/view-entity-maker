@@ -7,5 +7,5 @@ edition = "2021"
 
 [dependencies]
 tokio = { version = "1", features = ["full", "macros"] }
-sqlx = { version = "0.5", features = [ "runtime-tokio-native-tls" , "postgres", "uuid", "json", "macros" ] }
-clap = { version = "3.0", features = ["derive"] }
+sqlx = { version = "0.7.1", features = [ "runtime-tokio-native-tls" , "postgres", "uuid", "json", "macros" ] }
+clap = { version = "4.4.3", features = ["derive"] }
