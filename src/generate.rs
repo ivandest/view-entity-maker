@@ -70,7 +70,7 @@ fn parse_column(parts: Vec<&str>) -> String {
     if column_type.contains("integer") {
         column_type = column_type.replace("integer", "number");
     }
-    if column_type.contains("double") {
+    if column_type.contains("double precision") {
         column_type = column_type.replace("double precision", "number");
     }
     if column_type.contains("numeric") {

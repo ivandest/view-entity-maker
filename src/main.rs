@@ -31,20 +31,12 @@ async fn main() -> Result<(), Error> {
             match schemas {
                 Some(schemas) => {
                     let view_rows = get_view_rows(schemas, &pool).await;
-
                     let view_column_rows = get_view_column_rows(schemas, &pool).await;
 
-                    for (key, value) in view_rows.iter() {
-                        println!("RESULT {} --> {}", key, value);
-                    }
-
-                    for (key, value) in view_column_rows.iter() {
-                        println!("RESULT {} --> {}", key, value,);
-                    }
-
-                    generate::generate_file(view_rows, view_column_rows).expect("File generation failed");
+                    generate::generate_file(view_rows, view_column_rows)
+                        .expect("File generation failed");
                 }
-                None => println!("No schemas in args!")
+                None => println!("No schemas in args!"),
             }
 
             Ok(())

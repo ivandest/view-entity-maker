@@ -31,15 +31,16 @@ pub fn get_connection_string_from_args(args: &CliArgs) -> String {
 
 pub async fn get_view_rows(schemas: &String, pool: &Pool<Postgres>) -> HashMap<String, String> {
     let view_rows = sqlx::query_as::<_, PgView>(
-        "
-                        select table_name,
-                            view_definition
-                            from information_schema.views where table_schema in ($1)
-                            order by table_name",
-
-    ).bind(schemas)
+        "select table_name,
+                    view_definition
+             from information_schema.views 
+             where table_schema in ($1)
+             order by table_name",
+    )
+    .bind(schemas)
     .fetch_all(pool)
-    .await.unwrap();
+    .await
+    .unwrap();
 
     let mut view_rows_map = HashMap::new();
     for row in view_rows {
@@ -49,19 +50,24 @@ pub async fn get_view_rows(schemas: &String, pool: &Pool<Postgres>) -> HashMap<S
     view_rows_map
 }
 
-pub async fn get_view_column_rows(schemas: &String, pool: &Pool<Postgres>) -> HashMap<String, String> {
-    let view_column_rows = sqlx::query_as::<_, PgViewColumn>("
-                        select
-                            table_name,
-                            array_agg(column_name || '?: ' || data_type || ';')::text as columns
-                        from information_schema.columns where table_name in (
-                            select views.table_name from information_schema.views where table_schema in ($1)
-                        )
-                        group by table_name
-                        ",)
-        .bind(schemas)
-        .fetch_all(pool)
-        .await.unwrap();
+pub async fn get_view_column_rows(
+    schemas: &String,
+    pool: &Pool<Postgres>,
+) -> HashMap<String, String> {
+    let view_column_rows = sqlx::query_as::<_, PgViewColumn>(
+        "
+            select table_name,
+                   array_agg(column_name || '?: ' || data_type || ';')::text as columns
+            from information_schema.columns 
+            where table_name in (
+                select views.table_name from information_schema.views where table_schema in ($1)
+            )
+            group by table_name",
+    )
+    .bind(schemas)
+    .fetch_all(pool)
+    .await
+    .unwrap();
 
     let mut view_column_rows_map = HashMap::new();
 
