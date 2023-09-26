@@ -52,11 +52,14 @@ export class {} {{
             utils::make_camel_case(view_name.to_string(), true),
             columns_output
         )
-        .expect("TODO: panic message");
+        .expect("File generation failed!");
         let path = format!("{}.view.ts", utils::make_kebab_case(view_name.to_string()));
+        let file_path = path.clone();
 
         let mut file = File::create(path)?;
         file.write_all(content.as_ref())?;
+
+        println!("File was successfully generated at path {}", file_path);
     }
 
     Ok(())

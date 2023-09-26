@@ -17,16 +17,10 @@ pub async fn init_db(connection_string: String) -> Result<Pool<Postgres>, Error>
 }
 
 pub fn get_connection_string_from_args(args: &CliArgs) -> String {
-    let connection_string = format!(
+    format!(
         "postgres://{}:{}@{}:{}/{}",
         args.user, args.password, args.host, args.database_port, args.database_name
-    );
-    println!(
-        "postgres://{}:{}@{}:{}/{}",
-        args.user, args.password, args.host, args.database_port, args.database_name
-    );
-
-    return connection_string;
+    )
 }
 
 pub async fn get_view_rows(schemas: &String, pool: &Pool<Postgres>) -> HashMap<String, String> {

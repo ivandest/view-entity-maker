@@ -26,6 +26,7 @@ async fn main() -> Result<(), Error> {
 
     match pool {
         Ok(pool) => {
+            println!("File generation started");
             let schemas = &args.source_schemas;
 
             match schemas {
@@ -38,6 +39,8 @@ async fn main() -> Result<(), Error> {
                 }
                 None => println!("No schemas in args!"),
             }
+
+            println!("Finished successfully");
 
             Ok(())
         }
